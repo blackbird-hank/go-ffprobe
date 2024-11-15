@@ -156,7 +156,7 @@ func (s *SideDataList) UnmarshalJSON(b []byte) error {
 // If such SideData is found, it is returned, otherwise, an error is returned
 // indicating that the SideData of type SideDataUnknown was not found or the found
 // SideData was of an unexpected type.
-func (s SideDataList) FindUnknownSideData(sideDataType string) (*SideDataUnknown, error) {
+func (s *SideDataList) FindUnknownSideData(sideDataType string) (*SideDataUnknown, error) {
 	data, found := s.findSideDataByName(sideDataType)
 	if !found {
 		return nil, ErrSideDataNotFound
@@ -173,7 +173,7 @@ func (s SideDataList) FindUnknownSideData(sideDataType string) (*SideDataUnknown
 // FindSideData searches for SideData by its type in the SideDataList.
 // If SideData of the specified type is found, it is returned, otherwise,
 // an error is returned indicating that the SideData of the specified type was not found.
-func (s SideDataList) FindSideData(sideDataType string) (interface{}, error) {
+func (s *SideDataList) FindSideData(sideDataType string) (interface{}, error) {
 	data, found := s.findSideDataByName(sideDataType)
 	if !found {
 		return nil, ErrSideDataNotFound
@@ -184,7 +184,7 @@ func (s SideDataList) FindSideData(sideDataType string) (interface{}, error) {
 
 // GetDisplayMatrix retrieves the DisplayMatrix from the SideData. If the DisplayMatrix is not found or
 // the SideData is of the wrong type, an error is returned.
-func (s SideDataList) GetDisplayMatrix() (*SideDataDisplayMatrix, error) {
+func (s *SideDataList) GetDisplayMatrix() (*SideDataDisplayMatrix, error) {
 	data, found := s.findSideDataByName(SideDataTypeDisplayMatrix)
 	if !found {
 		return nil, ErrSideDataNotFound
@@ -198,7 +198,7 @@ func (s SideDataList) GetDisplayMatrix() (*SideDataDisplayMatrix, error) {
 
 // GetStereo3D retrieves the Stereo3D data from the SideData. If the Stereo3D data is not found or
 // the SideData is of the wrong type, an error is returned.
-func (s SideDataList) GetStereo3D() (*SideDataStereo3D, error) {
+func (s *SideDataList) GetStereo3D() (*SideDataStereo3D, error) {
 	data, found := s.findSideDataByName(SideDataTypeStereo3D)
 	if !found {
 		return nil, ErrSideDataNotFound
@@ -212,7 +212,7 @@ func (s SideDataList) GetStereo3D() (*SideDataStereo3D, error) {
 
 // GetSphericalMapping retrieves the SphericalMapping data from the SideData. If the SphericalMapping data is not found or
 // the SideData is of the wrong type, an error is returned.
-func (s SideDataList) GetSphericalMapping() (*SideDataSphericalMapping, error) {
+func (s *SideDataList) GetSphericalMapping() (*SideDataSphericalMapping, error) {
 	data, found := s.findSideDataByName(SideDataTypeSphericalMapping)
 	if !found {
 		return nil, ErrSideDataNotFound
@@ -226,7 +226,7 @@ func (s SideDataList) GetSphericalMapping() (*SideDataSphericalMapping, error) {
 
 // GetSkipSamples retrieves the SkipSamples data from the SideData. If the SkipSamples data is not found or
 // the SideData is of the wrong type, an error is returned.
-func (s SideDataList) GetSkipSamples() (*SideDataSkipSamples, error) {
+func (s *SideDataList) GetSkipSamples() (*SideDataSkipSamples, error) {
 	data, found := s.findSideDataByName(SideDataTypeSkipSamples)
 	if !found {
 		return nil, ErrSideDataNotFound
@@ -240,7 +240,7 @@ func (s SideDataList) GetSkipSamples() (*SideDataSkipSamples, error) {
 
 // GetMasteringDisplayMetadata retrieves the MasteringDisplayMetadata from the SideData. If the MasteringDisplayMetadata is not found or
 // the SideData is of the wrong type, an error is returned.
-func (s SideDataList) GetMasteringDisplayMetadata() (*SideDataMasteringDisplayMetadata, error) {
+func (s *SideDataList) GetMasteringDisplayMetadata() (*SideDataMasteringDisplayMetadata, error) {
 	data, found := s.findSideDataByName(SideDataTypeMasteringDisplayMetadata)
 	if !found {
 		return nil, ErrSideDataNotFound
@@ -254,7 +254,7 @@ func (s SideDataList) GetMasteringDisplayMetadata() (*SideDataMasteringDisplayMe
 
 // GetContentLightLevel retrieves the ContentLightLevel from the SideData. If the ContentLightLevel is not found or
 // the SideData is of the wrong type, an error is returned.
-func (s SideDataList) GetContentLightLevel() (*SideDataContentLightLevel, error) {
+func (s *SideDataList) GetContentLightLevel() (*SideDataContentLightLevel, error) {
 	data, found := s.findSideDataByName(SideDataTypeContentLightLevel)
 	if !found {
 		return nil, ErrSideDataNotFound
@@ -266,8 +266,8 @@ func (s SideDataList) GetContentLightLevel() (*SideDataContentLightLevel, error)
 	return contentLightLevel, nil
 }
 
-func (s SideDataList) findSideDataByName(sideDataType string) (interface{}, bool) {
-	for _, sd := range s {
+func (s *SideDataList) findSideDataByName(sideDataType string) (interface{}, bool) {
+	for _, sd := range *s {
 		if sd.Type == sideDataType {
 			return sd.Data, true
 		}
